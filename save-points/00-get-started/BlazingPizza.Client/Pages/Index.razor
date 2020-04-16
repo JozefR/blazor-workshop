@@ -6,7 +6,7 @@
 <div class="main">
     @if (showConfigureDialog)
     {
-        <ConfigurePizzaDialog Pizza="configuringPizza"/>
+        <ConfigurePizzaDialog Pizza="configuringPizza" onCancel="CancelConfigurePizzaDialog"/>
     }
     
     <ul class="pizza-cards">
@@ -47,6 +47,12 @@
         };
 
         showConfigureDialog = true;
+    }
+    
+    void CancelConfigurePizzaDialog()
+    {
+        configuringPizza = null;
+        showConfigureDialog = false;
     }
 }
 
