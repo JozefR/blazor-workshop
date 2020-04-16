@@ -80,9 +80,9 @@
 
     List<Topping> toppings;
 
-    protected async override Task OnInitializedAsync()
+    protected override async Task OnInitializedAsync()
     {
-        toppings = await HttpClient.GetFromJsonAsync<List<Topping>>("toppings");
+        toppings = await HttpClient.GetJsonAsync<List<Topping>>("toppings");
     }
 
     void ToppingSelected(ChangeEventArgs e)
