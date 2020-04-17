@@ -37,7 +37,7 @@ namespace BlazingPizza.Client
 
             ShowConfigureDialog = false;
         }
-
+        
         public void ResetOrder()
         {
             Order = new Order();

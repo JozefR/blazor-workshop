@@ -9,7 +9,6 @@ namespace BlazingPizza.Server
 {
     [Route("orders")]
     [ApiController]
-    // [Authorize]
     public class OrdersController : Controller
     {
         private readonly PizzaStoreContext _db;
@@ -84,6 +83,7 @@ namespace BlazingPizza.Server
                 _ = TrackAndSendNotificationsAsync(order, subscription);
             }
 
+            await Task.Delay(10000);
             return order.OrderId;
         }
 

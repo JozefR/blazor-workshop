@@ -4,6 +4,7 @@
 
     // Global export
     window.deliveryMap = {
+        
         showOrUpdate: function (elementId, markers) {
             var elem = document.getElementById(elementId);
             if (!elem) {

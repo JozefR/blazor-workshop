@@ -2,13 +2,9 @@
 @inject HttpClient HttpClient
 @inject OrderState OrderState
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JsRuntime
 
 <div class="main">
-    @if (OrderState.ShowConfigureDialog)
-    {
-        <ConfigurePizzaDialog Pizza="OrderState.ConfiguringPizza" OnCancel="OrderState.CancelConfigurePizzaDialog" OnConfirm="OrderState.ConfirmConfigurePizzaDialog"/>
-    }
-
     <ul class="pizza-cards">
         @if (specials != null)
         {
@@ -34,7 +30,7 @@
 
             @foreach (var configuredPizza in OrderState.Order.Pizzas)
             {
-                <ConfiguredPizzaItem Pizza="configuredPizza" OnRemoved="@(() => OrderState.RemoveConfiguredPizza(configuredPizza))"/>
+                <ConfiguredPizzaItem Pizza="configuredPizza" OnRemoved="@(() => RemovePizza(configuredPizza))"/>
             }
         </div>
     }
@@ -52,6 +48,13 @@
     </div>
 </div>
 
+<TemplatedDialog Show="OrderState.ShowConfigureDialog">
+    <ConfigurePizzaDialog 
+        Pizza="OrderState.ConfiguringPizza" 
+        OnCancel="OrderState.CancelConfigurePizzaDialog" 
+        OnConfirm="OrderState.ConfirmConfigurePizzaDialog" />
+</TemplatedDialog>
+
 @code {
     List<PizzaSpecial> specials;
 
@@ -59,5 +62,13 @@
     {
         specials = await HttpClient.GetJsonAsync<List<PizzaSpecial>>("specials");
     }
-
+    
+    async Task RemovePizza(Pizza configuredPizza)
+    {
+        if (await JsRuntime.Confirm($"Remove {configuredPizza.Special.Name} pizza from the order?"))
+        {
+            OrderState.RemoveConfiguredPizza(configuredPizza);
+        }
+    }
 }
+
